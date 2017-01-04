@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<form action="" id="form">
+		<input type="text" data-jvalidator="notEmpty & max10">
+		<span id="tips"></span>
+	</form>
+		<button id="submit" onclick="check()">提交订单</button>
+
+	<script type="text/javascript" src="validator.js"></script>
+	<script type="text/javascript">
+		var tipsEl  = document.getElementById("tips");
+		var validatorGroup = new validatorManager(document.getElementById("form"), {
+			on : {
+				valid : function(pattern){
+					tipsEl.style.color = "#0f0;"
+					tips.innerHTML = "";
+				},
+				invalid :  function(pattern){
+					tipsEl.style.color = "#f00;"
+					tips.innerHTML = pattern[0].msg;
+
+				}
+			}
+		});
+		validatorManager.addPattern({
+			name: "notEmpty",
+			msg: "错误时候的提示",
+			callback: function(value, cb) {
+				value = value.trim();
+				cb(value != "");
+			}
+		})
+		validatorManager.addPattern({
+			name: "max10",
+			msg: "最大不能超过10个字符",
+			callback: function(value, cb) {
+				value = value.trim();
+				cb(value.length <= 10);
+			}
+		})
+		function check(){
+			validatorGroup.validateAll(function(result){
+				alert(result);
+			})
+		}
+	</script>
+</body>
+</html>
